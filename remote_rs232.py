@@ -41,15 +41,15 @@ class RemoteRs232(object):
         received 19 12 1b 47 e6 0e cb 58 5c
         """
         self.logger.info('toggling power')
-        self.send_command(0x00, 0x00, 0x00, 0x00)
+        self.send_command('power', 0x00, 0x00, 0x00)
 
     def power_off(self):
         self.logger.info('power off')
-        self.send_command(0x00, 0x00, 0x00, 0x01)
+        self.send_command('power', 0x00, 0x00, 0x01)
 
     def power_on(self):
         self.logger.info('power on')
-        self.send_command(0x00, 0x00, 0x00, 0x02)
+        self.send_command('power', 0x00, 0x00, 0x02)
 
     # Volume Commands - CMD1=0x01
     def volume_set(self, volume_level):
@@ -58,33 +58,33 @@ class RemoteRs232(object):
             return
 
         self.logger.info('setting volume to %d', volume_level)
-        self.send_command(0x01, 0x00, 0x00, volume_level)
+        self.send_command('volume', 0x00, 0x00, volume_level)
 
     def volume_up(self):
         self.logger.info('volume up')
-        self.send_command(0x01, 0x00, 0x01, 0x00)
+        self.send_command('volume', 0x00, 0x01, 0x00)
 
     def volume_down(self):
         self.logger.info('volume down')
-        self.send_command(0x01, 0x00, 0x02, 0x00)
+        self.send_command('volume', 0x00, 0x02, 0x00)
 
     # Mute Commands - CMD1=0x02
     def mute_toggle(self):
         self.logger.info('mute toggle')
-        self.send_command(0x02, 0x00, 0x00, 0x00)
+        self.send_command('mute', 0x00, 0x00, 0x00)
 
     # Channel Analog Commands - CMD1=0x03
     def channel_up(self):
         self.logger.info('channel up')
-        self.send_command(0x03, 0x00, 0x01, 0x00)
+        self.send_command('channel', 0x00, 0x01, 0x00)
 
     def channel_down(self):
         self.logger.info('channel down')
-        self.send_command(0x03, 0x00, 0x02, 0x00)
+        self.send_command('channel', 0x00, 0x02, 0x00)
 
     def channel_previous(self):
         self.logger.info('channel ')
-        self.send_command(0x03, 0x00, 0x00, 0x00)
+        self.send_command('channel', 0x00, 0x00, 0x00)
 
     # Channel Digital Commands - CMD1=0x04
     def channel_set(self, channel, channel_type=CHANNEL_TYPE_ANALOG):
@@ -95,12 +95,12 @@ class RemoteRs232(object):
         # TODO
         if channel_type == RemoteRs232.CHANNEL_TYPE_ANALOG:
             self.logger.info('channel set to %s', channel)
-            self.send_command(0x04, channel_type, 0x00, channel)
+            self.send_command('channel', channel_type, 0x00, channel)
         else:
             self.logger.info('digital channel set to %s', channel)
             channel_main = channel.split('-')[0]
             channel_sub = channel.split('-')[1]
-            self.send_command(0x04, channel_type, channel_main, channel_sub)
+            self.send_command('channel_digital', channel_type, channel_main, channel_sub)
 
     # Input Commands - CMD1=0x0a
     def set_source(self, source_name):
@@ -157,18 +157,18 @@ class RemoteRs232(object):
             self.logger.error('invalid source name %s', source_name)
             return
 
-        self.send_command(0x0a, 0x00, source, number)
+        self.send_command('input', 0x00, source, number)
 
     # Picture Commands - CMD1=0x0b
 
     # Sound Commands - CMD1=0x0c
     def speaker_on(self):
         self.logger.info('speaker on')
-        self.send_command(0x0c, 0x06, 0x00, 0x00)
+        self.send_command('sound', 0x06, 0x00, 0x00)
 
     def speaker_off(self):
         self.logger.info('speaker off')
-        self.send_command(0x0c, 0x06, 0x00, 0x01)
+        self.send_command('sound', 0x06, 0x00, 0x01)
 
     # Key Commands - CMD1=0x0d
     def set_app(self, app_name):
@@ -182,30 +182,31 @@ class RemoteRs232(object):
         else:
             self.logger.error('invalid app name %s', app_name)
             return
-        self.send_command(0x0d, 0x00, 0x00, app)
-
-    def key_xxx(self):
-        self.logger.info('key xxx')
-        self.send_command(0x03, 0x00, 0x02, 0x00)
+        self.send_command('key', 0x00, 0x00, app)
 
     def key_factory(self):
         self.logger.info('key: !!!factory!!!')
-        self.send_command(0x0d, 0x00, 0x00, 0x3b)
+        self.send_command('key', 0x00, 0x00, 0x3b)
 
     def key_3speed(self):
         self.logger.info('key: !!!3speed!!!')
-        self.send_command(0x0d, 0x00, 0x00, 0x3c)
+        self.send_command('key', 0x00, 0x00, 0x3c)
 
     def key_volup(self):
         """
         08 22 0d 00 00 07 C2
         """
         self.logger.info('key: volume up')
-        self.send_command(0x0d, 0x00, 0x00, 0x07)
+        self.send_command('key', 0x00, 0x00, 0x07)
 
     def key_dnet(self):
         self.logger.info('key: !!!dnet!!!')
-        self.send_command(0x0d, 0x00, 0x00, 0xb7)
+        self.send_command('key', 0x00, 0x00, 0xb7)
+
+    # Template for new methods
+    def key_template(self):
+        self.logger.info('key xxx')
+        self.send_command(0x03, 0x00, 0x02, 0x00)
 
     # OSD/Setup Commands - CMD1=0x0e
     # ????
@@ -230,10 +231,10 @@ class RemoteRs232(object):
         elif cmd_control_type is 'mute':
             # Mute Commands - CMD1=0x02
             cmd1 = 0x02
-        elif cmd_control_type is 'channel_analog':
+        elif cmd_control_type is 'channel':
             # Channel Analog Commands - CMD1=0x03
             cmd1 = 0x03
-        elif cmd_control_type is 'channel':
+        elif cmd_control_type is 'channel_digital':
             # Channel Digital Commands - CMD1=0x04
             cmd1 = 0x04
         elif cmd_control_type is 'input':
@@ -303,12 +304,12 @@ class RemoteRs232(object):
         byte_sum = 0
         for byte in data:
             byte_sum += ord(byte)
-        print "Two's complement:", hex((~byte_sum + 1) & 0xFF)
+        print("Two's complement: %s", hex((~byte_sum + 1) & 0xFF))
         data = hex((~byte_sum + 1) & 0xFF)
         data = str(data)[2:]
         if len(data) < 2:
             data = '0' + data
-        print "checksum " + data
+        print("checksum " + data)
         return data
 
     def init_logging(self, log_level):

@@ -25,7 +25,7 @@ setuptools.setup(
         "samsung_remote_rs232"
     ],
     install_requires=[
-        'serial'
+        'pyserial'
     ],
     extras_require={
     },

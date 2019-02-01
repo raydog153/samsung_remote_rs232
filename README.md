@@ -23,4 +23,4 @@ Samsung TV's
 
 ## Installation instructions
 - Requirements
-  - Python module serial: pip install serial
+  - Python module serial: pip install pyserial (If you install wrong serial module by mistake you can undo using: pip uninstall serial)
