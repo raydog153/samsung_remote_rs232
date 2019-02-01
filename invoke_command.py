@@ -3,10 +3,12 @@
 import logging
 from remote_rs232 import RemoteRs232
 
-# Add console arg parsing so we can pass in serial port
-# /dev/tty.usbserial-FTE2V28X
+
 def main():
     # TODO argparse
+    # Add console arg parsing so we can pass in serial port
+    # /dev/tty.usbserial-FTE2V28X
+
     # BAUD must be 9600 for sending commands
     remote = RemoteRs232('/dev/ttyUSB0', log_level=logging.DEBUG)
 

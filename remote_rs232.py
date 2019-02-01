@@ -301,10 +301,10 @@ class RemoteRs232(object):
             return False
 
     @staticmethod
-    def generate_checksum(value):
+    def generate_checksum(data):
         # Definition? 100 - (Sum of first 6 bytes)
         # Checksum (the 2's complement of the sum of all the values except for the CS value.)
-        data = value.decode("hex")
+        #data = value.decode("hex")
         byte_sum = 0
         for byte in data:
             byte_sum += ord(byte)
