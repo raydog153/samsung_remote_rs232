@@ -22,4 +22,5 @@ Samsung TV's
 - TBD
 
 ## Installation instructions
-- TBD
+- Requirements
+  - Python module serial: pip install serial

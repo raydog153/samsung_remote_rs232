@@ -14,7 +14,7 @@ def main():
     #remote.set_source('hdmi2')
     remote.power_toggle()
     #remote.key_factory()
-    remote.key_3speed()
+    #remote.key_3speed()
     #remote.key_dnet()
     remote.close()
 
