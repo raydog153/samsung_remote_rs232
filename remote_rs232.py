@@ -291,6 +291,10 @@ class RemoteRs232(object):
         formatted_resp = ' '.join("{:02x}".format(ord(c)) for c in resp)
         self.logger.debug('received %s', formatted_resp)
 
+        resp2 = self.port.readline()
+        formatted_resp2 = ' '.join("{:02x}".format(ord(c)) for c in resp2)
+        self.logger.debug('received resp2 %s', formatted_resp2)
+
         if resp == b'\x03\x0c\xf1':
             self.logger.info('command response valid 3byte')
             return True
@@ -304,6 +308,7 @@ class RemoteRs232(object):
         else:
             self.logger.error('command response unknown/failed')
             return False
+
 
     @staticmethod
     def generate_checksum(data):
