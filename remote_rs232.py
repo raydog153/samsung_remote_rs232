@@ -216,6 +216,11 @@ class RemoteRs232(object):
         self.logger.info('request power status...')
         self.send_command('status', 0x00, 0x00, 0x00)
 
+    # Status Commands - CMD1=0xf0
+    def get_status_volume(self):
+        self.logger.info('request volume status...')
+        self.send_command('status', 0x01, 0x00, 0x00)
+
     def open(self):
         self.logger.debug('opening port %s', self.port_name)
         return serial.Serial(self.port_name, self.baud_rate, 8, serial.PARITY_NONE, serial.STOPBITS_ONE, xonxoff=0, rtscts=0, timeout=2)
@@ -271,7 +276,7 @@ class RemoteRs232(object):
 
         command = bytearray([RemoteRs232.HEADER_BYTE1, RemoteRs232.HEADER_BYTE2, cmd1, cmd2, cmd3, value])
         # TODO: Use seperate method for checksum, first validate
-        RemoteRs232.generate_checksum(command)
+        # RemoteRs232.generate_checksum(command)
         checksum = -(sum(command) % 256) & 0xff
         command.append(checksum)
 
@@ -307,7 +312,7 @@ class RemoteRs232(object):
         #data = value.decode("hex")
         byte_sum = 0
         for byte in data:
-            byte_sum += ord(byte)
+            byte_sum += byte
         print("Two's complement: %s", hex((~byte_sum + 1) & 0xFF))
         data = hex((~byte_sum + 1) & 0xFF)
         data = str(data)[2:]
