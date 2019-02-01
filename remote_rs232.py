@@ -24,7 +24,7 @@ class RemoteRs232(object):
     HEADER_BYTE1 = 0x08
     HEADER_BYTE2 = 0x22
 
-    def __init__(self, port_name, log_level=logging.INFO, baud_rate=19200):
+    def __init__(self, port_name, log_level=logging.INFO, baud_rate=9600):
         """Initializes RemoteRs232 with the given settings.
         """
         self.port_name = port_name
@@ -205,13 +205,16 @@ class RemoteRs232(object):
 
     # Template for new methods
     def key_template(self):
-        self.logger.info('key xxx')
-        self.send_command(0x03, 0x00, 0x02, 0x00)
+        self.logger.info('key xyz')
+        self.send_command('xyz', 0x00, 0x02, 0x00)
 
     # OSD/Setup Commands - CMD1=0x0e
     # ????
 
     # Status Commands - CMD1=0xf0
+    def get_status_power(self):
+        self.logger.info('request power status...')
+        self.send_command('status', 0x00, 0x00, 0x00)
 
     def open(self):
         self.logger.debug('opening port %s', self.port_name)
@@ -267,7 +270,8 @@ class RemoteRs232(object):
             return
 
         command = bytearray([RemoteRs232.HEADER_BYTE1, RemoteRs232.HEADER_BYTE2, cmd1, cmd2, cmd3, value])
-
+        # TODO: Use seperate method for checksum, first validate
+        RemoteRs232.generate_checksum(command)
         checksum = -(sum(command) % 256) & 0xff
         command.append(checksum)
 
@@ -321,8 +325,8 @@ class RemoteRs232(object):
         """
         self.logger.setLevel(log_level)
         formatter = logging.Formatter('%(asctime)s %(name)s [%(levelname)s] %(message)s')
-        ch = logging.StreamHandler()
-        ch.setLevel(log_level)
-        ch.setFormatter(formatter)
-        self.logger.addHandler(ch)
+        stream_handle = logging.StreamHandler()
+        stream_handle.setLevel(log_level)
+        stream_handle.setFormatter(formatter)
+        self.logger.addHandler(stream_handle)
         self.logger.debug('logging initialized')
