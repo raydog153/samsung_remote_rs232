@@ -25,7 +25,7 @@ class RemoteRs232(object):
     HEADER_BYTE2 = 0x22
 
     def __init__(self, port_name, log_level=logging.INFO, baud_rate=19200):
-        """Initializes SamsungRemote with the given settings.
+        """Initializes RemoteRs232 with the given settings.
         """
         self.port_name = port_name
         self.baud_rate = baud_rate
@@ -89,7 +89,7 @@ class RemoteRs232(object):
     # Channel Digital Commands - CMD1=0x04
     def channel_set(self, channel, channel_type=CHANNEL_TYPE_ANALOG):
         """
-        # For Digital channel:
+        # Digital channel format:
         #   channel = 4-1
         """
         # TODO
