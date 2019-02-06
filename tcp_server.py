@@ -8,6 +8,7 @@ def server_program():
     # get the hostname
     host = socket.gethostname()
     port = 55000  # initiate port no above 1024
+    print("Will bind on: " + str(host) + ":" + str(port))
 
     server_socket = socket.socket()  # get instance
     # look closely. The bind() function takes tuple as argument
