@@ -7,7 +7,8 @@ from remote_rs232 import RemoteRs232
 def server_program():
     # get the hostname
     remote = None
-    host = socket.gethostname()
+    # host = socket.gethostname()
+    host = '192.168.1.100'
     port = 55000  # initiate port no above 1024
     print("Will bind on: " + str(host) + ":" + str(port))
 
