@@ -6,6 +6,7 @@ from remote_rs232 import RemoteRs232
 
 def server_program():
     # get the hostname
+    remote = None
     host = socket.gethostname()
     port = 55000  # initiate port no above 1024
     print("Will bind on: " + str(host) + ":" + str(port))
@@ -41,6 +42,7 @@ def server_program():
                  # TODO
                 #remote.power_toggle()
             remote.close()
+            remote = None
         else:
             print('Unable to parse command from data')
 

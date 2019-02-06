@@ -242,6 +242,7 @@ class RemoteRs232(object):
     def close(self):
         self.logger.debug('closing %s', self.port_name)
         self.port.close()
+        self.port = None
 
     def send_command(self, cmd_control_type, cmd2, cmd3, value):
         if cmd_control_type is 'power':
