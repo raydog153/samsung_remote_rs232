@@ -13,39 +13,39 @@
     "status": {
       "power": {
         "cmd": [0, 0, 0],
-        "response": 0,
+        "response": 0
       },
       "volume": {
         "cmd": [1, 0, 0],
-        "response": 0,
+        "response": 0
       },
       "mute": {
         "cmd": [2, 0, 0],
-        "response": 0,
+        "response": 0
       },
       "channel": {
         "cmd": [3, 0, 0],
-        "response": 0,
+        "response": 0
       },
       "input": {
         "cmd": [4, 0, 0],
-        "response": 0,
+        "response": 0
       },
       "picture_size": {
         "cmd": [5, 0, 0],
-        "response": 0,
+        "response": 0
       },
       "3d_mode": {
         "cmd": [6, 0, 0],
-        "response": 0,
+        "response": 0
       },
       "picture_mode": {
         "cmd": [7, 0, 0],
-        "response": 0,
+        "response": 0
       },
       "sound_mode": {
         "cmd": [8, 0, 0],
-        "response": 0,
+        "response": 0
       }
     }
   }

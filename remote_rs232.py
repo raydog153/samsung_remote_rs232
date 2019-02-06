@@ -203,10 +203,15 @@ class RemoteRs232(object):
         self.logger.info('key: !!!dnet!!!')
         self.send_command('key', 0x00, 0x00, 0xb7)
 
+    def send_key(self, key_name):
+        key_id = 0x00 # key_lookup(key_name)
+        self.logger.info('key: %s (%s)', key_name, key_id)
+        self.send_command('key', 0x00, 0x00, key_id)
+
     # Template for new methods
     def key_template(self):
-        self.logger.info('key xyz')
-        self.send_command('xyz', 0x00, 0x02, 0x00)
+        self.logger.info('key <key>')
+        self.send_command('key', 0x00, 0x00, 0x00)
 
     # OSD/Setup Commands - CMD1=0x0e
     # ????
@@ -214,12 +219,21 @@ class RemoteRs232(object):
     # Status Commands - CMD1=0xf0
     def get_status_power(self):
         self.logger.info('request power status...')
-        self.send_command('status', 0x00, 0x00, 0x00)
+        return self.send_command('status', 0x00, 0x00, 0x00)
 
     # Status Commands - CMD1=0xf0
     def get_status_volume(self):
         self.logger.info('request volume status...')
         self.send_command('status', 0x01, 0x00, 0x00)
+
+    def is_on(self):
+        # Function get_status_power doesn't actually work for status at all.
+        # Returns success if TV is on, failure if TV is off
+        # Hence hack to find out if TV is on or not...
+        if self.get_status_power():
+            return True
+        else:
+            return False
 
     def open(self):
         self.logger.debug('opening port %s', self.port_name)
@@ -267,7 +281,7 @@ class RemoteRs232(object):
             self.logger.error('invalid control type name %s', cmd_control_type)
             return
 
-        self.send_command_raw(cmd1, cmd2, cmd3, value)
+        return self.send_command_raw(cmd1, cmd2, cmd3, value)
 
     def send_command_raw(self, cmd1, cmd2, cmd3, value):
         if not self.port.isOpen():
