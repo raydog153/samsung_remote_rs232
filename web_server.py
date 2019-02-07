@@ -5,6 +5,8 @@ import re
 import json
 from remote_rs232 import RemoteRs232
 
+# nohup python web_server.py &
+
 PORT_NUMBER = 55000
 KEY_MAPPINGS = dict(
     # KEY_POWER_STATUS=[0x00, 0x00, 0x00],

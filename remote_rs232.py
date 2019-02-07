@@ -41,15 +41,15 @@ class RemoteRs232(object):
         received 19 12 1b 47 e6 0e cb 58 5c
         """
         self.logger.info('toggling power')
-        self.send_command('power', 0x00, 0x00, 0x00)
+        return self.send_command('power', 0x00, 0x00, 0x00)
 
     def power_off(self):
         self.logger.info('power off')
-        self.send_command('power', 0x00, 0x00, 0x01)
+        return self.send_command('power', 0x00, 0x00, 0x01)
 
     def power_on(self):
         self.logger.info('power on')
-        self.send_command('power', 0x00, 0x00, 0x02)
+        return self.send_command('power', 0x00, 0x00, 0x02)
 
     # Volume Commands - CMD1=0x01
     def volume_set(self, volume_level):
@@ -58,33 +58,33 @@ class RemoteRs232(object):
             return
 
         self.logger.info('setting volume to %d', volume_level)
-        self.send_command('volume', 0x00, 0x00, volume_level)
+        return self.send_command('volume', 0x00, 0x00, volume_level)
 
     def volume_up(self):
         self.logger.info('volume up')
-        self.send_command('volume', 0x00, 0x01, 0x00)
+        return self.send_command('volume', 0x00, 0x01, 0x00)
 
     def volume_down(self):
         self.logger.info('volume down')
-        self.send_command('volume', 0x00, 0x02, 0x00)
+        return self.send_command('volume', 0x00, 0x02, 0x00)
 
     # Mute Commands - CMD1=0x02
     def mute_toggle(self):
         self.logger.info('mute toggle')
-        self.send_command('mute', 0x00, 0x00, 0x00)
+        return self.send_command('mute', 0x00, 0x00, 0x00)
 
     # Channel Analog Commands - CMD1=0x03
     def channel_up(self):
         self.logger.info('channel up')
-        self.send_command('channel', 0x00, 0x01, 0x00)
+        return self.send_command('channel', 0x00, 0x01, 0x00)
 
     def channel_down(self):
         self.logger.info('channel down')
-        self.send_command('channel', 0x00, 0x02, 0x00)
+        return self.send_command('channel', 0x00, 0x02, 0x00)
 
     def channel_previous(self):
         self.logger.info('channel ')
-        self.send_command('channel', 0x00, 0x00, 0x00)
+        return self.send_command('channel', 0x00, 0x00, 0x00)
 
     # Channel Digital Commands - CMD1=0x04
     def channel_set(self, channel, channel_type=CHANNEL_TYPE_ANALOG):
@@ -95,12 +95,12 @@ class RemoteRs232(object):
         # TODO
         if channel_type == RemoteRs232.CHANNEL_TYPE_ANALOG:
             self.logger.info('channel set to %s', channel)
-            self.send_command('channel', channel_type, 0x00, channel)
+            return self.send_command('channel', channel_type, 0x00, channel)
         else:
             self.logger.info('digital channel set to %s', channel)
             channel_main = channel.split('-')[0]
             channel_sub = channel.split('-')[1]
-            self.send_command('channel_digital', channel_type, channel_main, channel_sub)
+            return self.send_command('channel_digital', channel_type, channel_main, channel_sub)
 
     # Input Commands - CMD1=0x0a
     def set_source(self, source_name):
@@ -157,18 +157,18 @@ class RemoteRs232(object):
             self.logger.error('invalid source name %s', source_name)
             return
 
-        self.send_command('input', 0x00, source, number)
+        return self.send_command('input', 0x00, source, number)
 
     # Picture Commands - CMD1=0x0b
 
     # Sound Commands - CMD1=0x0c
     def speaker_on(self):
         self.logger.info('speaker on')
-        self.send_command('sound', 0x06, 0x00, 0x00)
+        return self.send_command('sound', 0x06, 0x00, 0x00)
 
     def speaker_off(self):
         self.logger.info('speaker off')
-        self.send_command('sound', 0x06, 0x00, 0x01)
+        return self.send_command('sound', 0x06, 0x00, 0x01)
 
     # Key Commands - CMD1=0x0d
     def set_app(self, app_name):
@@ -182,35 +182,35 @@ class RemoteRs232(object):
         else:
             self.logger.error('invalid app name %s', app_name)
             return
-        self.send_command('key', 0x00, 0x00, app)
+        return self.send_command('key', 0x00, 0x00, app)
 
     def key_factory(self):
         self.logger.info('key: !!!factory!!!')
-        self.send_command('key', 0x00, 0x00, 0x3b)
+        return self.send_command('key', 0x00, 0x00, 0x3b)
 
     def key_3speed(self):
         self.logger.info('key: !!!3speed!!!')
-        self.send_command('key', 0x00, 0x00, 0x3c)
+        return self.send_command('key', 0x00, 0x00, 0x3c)
 
     def key_volup(self):
         """
         08 22 0d 00 00 07 C2
         """
         self.logger.info('key: volume up')
-        self.send_command('key', 0x00, 0x00, 0x07)
+        return self.send_command('key', 0x00, 0x00, 0x07)
 
     def key_dnet(self):
         self.logger.info('key: !!!dnet!!!')
-        self.send_command('key', 0x00, 0x00, 0xb7)
+        return self.send_command('key', 0x00, 0x00, 0xb7)
 
     def send_key(self, key_name, command_params):
         self.logger.info('key: %s (%s)', key_name, command_params)
-        self.send_command('key', command_params[0], command_params[1], command_params[2])
+        return self.send_command('key', command_params[0], command_params[1], command_params[2])
 
     # Template for new methods
     def key_template(self):
         self.logger.info('key <key>')
-        self.send_command('key', 0x00, 0x00, 0x00)
+        return self.send_command('key', 0x00, 0x00, 0x00)
 
     # OSD/Setup Commands - CMD1=0x0e
     # ????
@@ -223,7 +223,7 @@ class RemoteRs232(object):
     # Status Commands - CMD1=0xf0
     def get_status_volume(self):
         self.logger.info('request volume status...')
-        self.send_command('status', 0x01, 0x00, 0x00)
+        return self.send_command('status', 0x01, 0x00, 0x00)
 
     def is_on(self):
         # Function get_status_power doesn't actually work for status at all.
