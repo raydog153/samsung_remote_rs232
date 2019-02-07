@@ -2,6 +2,7 @@ import logging
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import base64
 import re
+import json
 from remote_rs232 import RemoteRs232
 
 PORT_NUMBER = 55000
@@ -35,6 +36,7 @@ def run_key_command(key_command):
     # Supported keys: PICTURE_SIZE, INFO, RETURN, ENTER,
     #   VOLDOWN, VOLUP, EXIT, PRECH, CHDOWN, CHUP, RIGHT, LEFT, DOWN, UP, SLEEP,
     #   HDMI, t=TOOLS, MENU, SOURCE, MUTE, POWEROFF, POWER_STATUS
+    command_status = -1
     remote = RemoteRs232('/dev/ttyUSB0', log_level=logging.DEBUG)
     # key_command = base64.b64decode(key_command)
     print('Received command %s', key_command)
@@ -47,9 +49,11 @@ def run_key_command(key_command):
 
     if power_is_on and KEY_MAPPINGS[key_command]:
         # Only run commands if TV is powered
-        remote.send_key(key_command)
+        command_status = remote.send_key(key_command)
 
     remote.close()
+    json.dumps({'power_status': power_is_on, 'command_status': command_status})
+
     if power_is_on:
         print('sending tv is on')
         return True
@@ -65,7 +69,7 @@ class myHandler(BaseHTTPRequestHandler):
     # Handler for the GET requests
     def do_GET(self):
         path_parts = self.path.split('/')
-        response = ''
+        response = '{}'
         key_command = ''
         print(path_parts)
         match = re.search('KEY_', path_parts[1])
@@ -79,7 +83,7 @@ class myHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/json')
         self.end_headers()
         # Send the html message
-        self.wfile.write("Hello World: " + key_command + str(response))
+        self.wfile.write(response)
         return
 
 
