@@ -11,6 +11,33 @@ KEY_MAPPINGS = dict(
     KEY_POWEROFF=[0x00, 0x00, 0x98],
     KEY_POWERON=[0x00, 0x00, 0x99],
     KEY_POWER=[0x00, 0x00, 0x9D],
+    KEY_MUTE=[0x00, 0x00, 0x0F],
+#    KEY_MUTE='mute_toggle',
+    KEY_SOURCE=[0x00, 0x00, 0x01],
+    KEY_MENU=[0x00, 0x00, 0x1A],
+    KEY_TOOLS=[0x00, 0x00, 0x4B],
+    KEY_HDMI=[0x00, 0x00, 0x8B],
+    KEY_SLEEP=[0x00, 0x00, 0x03],
+    KEY_UP=[0x00, 0x00, 0x60],
+    KEY_DOWN=[0x00, 0x00, 0x61],
+    KEY_LEFT=[0x00, 0x00, 0x65],
+    KEY_RIGHT=[0x00, 0x00, 0x62],
+    KEY_CHUP='channel_up',
+    KEY_CHDOWN='channel_down',
+    KEY_PRECH='channel_previous',
+    KEY_EXIT=[0x00, 0x00, 0x2d],
+    KEY_VOLUP='key_volup',
+    KEY_VOLDOWN='volume_down',
+    KEY_ENTER=[0x00, 0x00, 0x68],
+    KEY_RETURN=[0x00, 0x00, 0x58],
+    KEY_INFO=[0x00, 0x00, 0x1f],
+    KEY_PICTURE_SIZE=[0x00, 0x00, 0x3e]
+)
+KEYID_MAPPINGS = dict(
+    # KEY_POWER_STATUS=[0x00, 0x00, 0x00],
+    KEY_POWEROFF=[0x00, 0x00, 0x98],
+    KEY_POWERON=[0x00, 0x00, 0x99],
+    KEY_POWER=[0x00, 0x00, 0x9D],
     KEY_MUTE=[0x00, 0x00, 0x0f],
     KEY_SOURCE=[0x00, 0x00, 0x01],
     KEY_MENU=[0x00, 0x00, 0x1a],
@@ -26,7 +53,7 @@ KEY_MAPPINGS = dict(
     KEY_PRECH=[0x00, 0x00, 0x13],
     KEY_EXIT=[0x00, 0x00, 0x2d],
     KEY_VOLUP=[0x00, 0x00, 0x07],
-    KEY_VOLDOWN='volume_down',
+    KEY_VOLDOWN=[0x00, 0x00, 0x0b],
     KEY_ENTER=[0x00, 0x00, 0x68],
     KEY_RETURN=[0x00, 0x00, 0x58],
     KEY_INFO=[0x00, 0x00, 0x1f],
@@ -54,7 +81,7 @@ def run_key_command(key_command):
     elif power_is_on and KEY_MAPPINGS[key_command]:
         # Only run commands if TV is powered
         if isinstance(KEY_MAPPINGS[key_command], str):
-            command_status = getattr(remote, KEY_MAPPINGS[key_command])(remote)
+            command_status = getattr(remote, KEY_MAPPINGS[key_command])()
         else:
             command_status = remote.send_key(key_command, KEY_MAPPINGS[key_command])
 
