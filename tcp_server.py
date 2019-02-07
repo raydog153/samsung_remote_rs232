@@ -45,11 +45,17 @@ def server_program():
 
             if remote.is_on():
                 print('sending tv is on')
-                conn.send(data.encode())  # send data to the client
+                data = b"\x00\x04"
+                data += b"\x64\x00\x01\x00"
+                conn.send(data.encode())
+                #conn.send(data.encode())  # send data to the client
                 conn.send("TV is on".encode())  # send data to the client
             else:
                 print('sending tv is off')
                 conn.send("TV is off".encode())  # send data to the client
+
+            print('closing tcp connection')
+            conn.close()  # close the connection
 
             remote.close()
             remote = None
@@ -66,8 +72,8 @@ def server_program():
         data = b"\x00\x04"
         data += b"\x64\x00\x01\x00"
         conn.send(data.encode())
-        print('closing tcp connection')
-        conn.close()  # close the connection
+        #print('closing tcp connection')
+        #conn.close()  # close the connection
 
 
 if __name__ == '__main__':
