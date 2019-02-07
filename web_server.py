@@ -52,14 +52,12 @@ def run_key_command(key_command):
         command_status = remote.send_key(key_command)
 
     remote.close()
-    json.dumps({'power_status': power_is_on, 'command_status': command_status})
 
     if power_is_on:
         print('sending tv is on')
-        return True
     else:
         print('sending tv is off')
-        return False
+    return json.dumps({'power_status': power_is_on, 'command_status': command_status})
 
 
 # This class will handles any incoming request from
@@ -80,7 +78,7 @@ class myHandler(BaseHTTPRequestHandler):
         else:
             self.send_response(500)
 
-        self.send_header('Content-type', 'text/json')
+        self.send_header('Content-type', 'application/json')
         self.end_headers()
         # Send the html message
         self.wfile.write(response)
