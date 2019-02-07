@@ -51,10 +51,10 @@ def server_program():
                 data += b"\x64\x00\x01\x00"
                 conn.send(data.encode())
                 #conn.send(data.encode())  # send data to the client
-                conn.send("TV is on".encode())  # send data to the client
+                conn.sendall("TV is on\n".encode())  # send data to the client
             else:
                 print('sending tv is off')
-                conn.send("TV is off".encode())  # send data to the client
+                conn.sendall("TV is off\n".encode())  # send data to the client
 
             #print('closing tcp connection')
             #conn.close()  # close the connection

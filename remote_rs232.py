@@ -237,7 +237,7 @@ class RemoteRs232(object):
 
     def open(self):
         self.logger.debug('opening port %s', self.port_name)
-        return serial.Serial(self.port_name, self.baud_rate, 8, serial.PARITY_NONE, serial.STOPBITS_ONE, xonxoff=0, rtscts=0, timeout=2)
+        return serial.Serial(self.port_name, self.baud_rate, 8, serial.PARITY_NONE, serial.STOPBITS_ONE, xonxoff=0, rtscts=0, timeout=0.5)
 
     def close(self):
         self.logger.debug('closing %s', self.port_name)
@@ -299,16 +299,16 @@ class RemoteRs232(object):
         formatted_hex = ' '.join(hexstr[i:i+2] for i in range(0, len(hexstr), 2))
 
         self.port.write(command)        
-        self.logger.debug('sent %s', hexstr)
+        # self.logger.debug('sent %s', hexstr)
         self.logger.debug('sent %s', formatted_hex)
 
         resp = self.port.readline()
         formatted_resp = ' '.join("{:02x}".format(ord(c)) for c in resp)
         self.logger.debug('received %s', formatted_resp)
 
-        resp2 = self.port.readline()
-        formatted_resp2 = ' '.join("{:02x}".format(ord(c)) for c in resp2)
-        self.logger.debug('received resp2 %s', formatted_resp2)
+        # resp2 = self.port.readline()
+        # formatted_resp2 = ' '.join("{:02x}".format(ord(c)) for c in resp2)
+        # self.logger.debug('received resp2 %s', formatted_resp2)
 
         if resp == b'\x03\x0c\xf1':
             self.logger.info('command response valid 3byte')
