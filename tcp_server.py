@@ -71,8 +71,8 @@ def server_program():
         data = b"\x00\x04"
         data += b"\x64\x00\x01\x00"
         #conn.send(data.encode())
-        #print('closing tcp connection')
-        #conn.close()  # close the connection
+        print('closing tcp connection')
+        conn.close()  # close the connection
 
     remote.close()
 
