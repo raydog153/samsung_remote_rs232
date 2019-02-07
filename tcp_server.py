@@ -6,7 +6,6 @@ from remote_rs232 import RemoteRs232
 
 def server_program():
     # get the hostname
-    remote = None
     # host = socket.gethostname()
     host = '192.168.1.100'
     port = 55000  # initiate port no above 1024
@@ -17,7 +16,9 @@ def server_program():
     server_socket.bind((host, port))  # bind host address and port together
 
     # configure how many client the server can listen simultaneously
+    remote = RemoteRs232('/dev/ttyUSB0', log_level=logging.DEBUG)
     server_socket.listen(1)
+
     while True:
         conn, address = server_socket.accept()  # accept new connection
         print("Connection from: " + str(address))
@@ -26,6 +27,7 @@ def server_program():
         data = conn.recv(1024).decode()
         if not data:
             # if data is not received then wait for next client
+            print('closing tcp connection')
             conn.close()
             continue
         print("from connected client: " + str(data))
@@ -33,17 +35,17 @@ def server_program():
         if parsed_data[2]:
             command = base64.b64decode(parsed_data[2])
             print('Received command %s', command)
-            remote = RemoteRs232('/dev/ttyUSB0', log_level=logging.DEBUG)
 
             if command == 'KEY_POWEROFF':
                 remote.power_toggle()
-            elif remote.is_on():
+            power_is_on = remote.is_on()
+            if power_is_on:
                 # Only run commands if TV is powered
                 print('TV is on, lets execute command!')
                  # TODO
                 #remote.power_toggle()
 
-            if remote.is_on():
+            if power_is_on:
                 print('sending tv is on')
                 data = b"\x00\x04"
                 data += b"\x64\x00\x01\x00"
@@ -54,11 +56,8 @@ def server_program():
                 print('sending tv is off')
                 conn.send("TV is off".encode())  # send data to the client
 
-            print('closing tcp connection')
-            conn.close()  # close the connection
-
-            remote.close()
-            remote = None
+            #print('closing tcp connection')
+            #conn.close()  # close the connection
         else:
             print('Unable to parse command from data')
 
@@ -75,6 +74,7 @@ def server_program():
         #print('closing tcp connection')
         #conn.close()  # close the connection
 
+    remote.close()
 
 if __name__ == '__main__':
     server_program()

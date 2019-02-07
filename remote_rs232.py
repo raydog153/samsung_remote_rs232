@@ -349,9 +349,10 @@ class RemoteRs232(object):
                 or CRITICAL. Example: logging.INFO
         """
         self.logger.setLevel(log_level)
-        formatter = logging.Formatter('%(asctime)s %(name)s [%(levelname)s] %(message)s')
-        stream_handle = logging.StreamHandler()
-        stream_handle.setLevel(log_level)
-        stream_handle.setFormatter(formatter)
-        self.logger.addHandler(stream_handle)
+        if not self.logger.hasHandlers():
+            formatter = logging.Formatter('%(asctime)s %(name)s [%(levelname)s] %(message)s')
+            stream_handle = logging.StreamHandler()
+            stream_handle.setLevel(log_level)
+            stream_handle.setFormatter(formatter)
+            self.logger.addHandler(stream_handle)
         self.logger.debug('logging initialized')
