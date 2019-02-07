@@ -205,7 +205,7 @@ class RemoteRs232(object):
 
     def send_key(self, key_name, command_params):
         self.logger.info('key: %s (%s)', key_name, command_params)
-        self.send_command('key', command_params[0], command_params[0], command_params[0])
+        self.send_command('key', command_params[0], command_params[1], command_params[2])
 
     # Template for new methods
     def key_template(self):
