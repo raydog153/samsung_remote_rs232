@@ -203,10 +203,9 @@ class RemoteRs232(object):
         self.logger.info('key: !!!dnet!!!')
         self.send_command('key', 0x00, 0x00, 0xb7)
 
-    def send_key(self, key_name):
-        key_id = 0x00 # key_lookup(key_name)
-        self.logger.info('key: %s (%s)', key_name, key_id)
-        self.send_command('key', 0x00, 0x00, key_id)
+    def send_key(self, key_name, command_params):
+        self.logger.info('key: %s (%s)', key_name, command_params)
+        self.send_command('key', command_params[0], command_params[0], command_params[0])
 
     # Template for new methods
     def key_template(self):

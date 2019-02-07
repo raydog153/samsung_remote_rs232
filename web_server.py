@@ -9,6 +9,8 @@ PORT_NUMBER = 55000
 KEY_MAPPINGS = dict(
     # KEY_POWER_STATUS=[0x00, 0x00, 0x00],
     KEY_POWEROFF=[0x00, 0x00, 0x98],
+    KEY_POWERON=[0x00, 0x00, 0x99],
+    KEY_POWER=[0x00, 0x00, 0x9D],
     KEY_MUTE=[0x00, 0x00, 0x0f],
     KEY_SOURCE=[0x00, 0x00, 0x01],
     KEY_MENU=[0x00, 0x00, 0x1a],
@@ -49,7 +51,7 @@ def run_key_command(key_command):
 
     if power_is_on and KEY_MAPPINGS[key_command]:
         # Only run commands if TV is powered
-        command_status = remote.send_key(key_command)
+        command_status = remote.send_key(key_command, KEY_MAPPINGS[key_command])
 
     remote.close()
 
