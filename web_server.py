@@ -1,6 +1,7 @@
 import logging
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import base64
+import re
 from remote_rs232 import RemoteRs232
 
 PORT_NUMBER = 55000
@@ -67,7 +68,8 @@ class myHandler(BaseHTTPRequestHandler):
         response = ''
         key_command = ''
         print(path_parts)
-        if path_parts[1]:
+        match = re.search('KEY_', path_parts[1])
+        if path_parts[1] and match:
             key_command = path_parts[1]
             response = run_key_command(key_command)
             self.send_response(200)
