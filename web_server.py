@@ -11,8 +11,7 @@ KEY_MAPPINGS = dict(
     KEY_POWEROFF=[0x00, 0x00, 0x98],
     KEY_POWERON=[0x00, 0x00, 0x99],
     KEY_POWER=[0x00, 0x00, 0x9D],
-    KEY_MUTE=[0x00, 0x00, 0x0F],
-#    KEY_MUTE='mute_toggle',
+    KEY_MUTE='mute_toggle',
     KEY_SOURCE=[0x00, 0x00, 0x01],
     KEY_MENU=[0x00, 0x00, 0x1A],
     KEY_TOOLS=[0x00, 0x00, 0x4B],
@@ -26,7 +25,7 @@ KEY_MAPPINGS = dict(
     KEY_CHDOWN='channel_down',
     KEY_PRECH='channel_previous',
     KEY_EXIT=[0x00, 0x00, 0x2d],
-    KEY_VOLUP='key_volup',
+    KEY_VOLUP='volume_up',
     KEY_VOLDOWN='volume_down',
     KEY_ENTER=[0x00, 0x00, 0x68],
     KEY_RETURN=[0x00, 0x00, 0x58],
@@ -76,9 +75,7 @@ def run_key_command(key_command):
         remote.power_toggle()
         power_is_on = not power_is_on
 
-    if key_command == 'KEY_VOLUP':
-        command_status = remote.volume_up()
-    elif power_is_on and KEY_MAPPINGS[key_command]:
+    if power_is_on and KEY_MAPPINGS[key_command]:
         # Only run commands if TV is powered
         if isinstance(KEY_MAPPINGS[key_command], str):
             command_status = getattr(remote, KEY_MAPPINGS[key_command])()
