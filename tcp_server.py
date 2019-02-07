@@ -71,7 +71,7 @@ def server_program():
         data += "Living Room"
         data = b"\x00\x04"
         data += b"\x64\x00\x01\x00"
-        conn.send(data.encode())
+        #conn.send(data.encode())
         #print('closing tcp connection')
         #conn.close()  # close the connection
 
