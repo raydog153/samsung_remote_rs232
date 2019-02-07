@@ -49,7 +49,9 @@ def run_key_command(key_command):
         remote.power_toggle()
         power_is_on = not power_is_on
 
-    if power_is_on and KEY_MAPPINGS[key_command]:
+    if key_command == 'KEY_VOLUP':
+        command_status = remote.volume_up()
+    elif power_is_on and KEY_MAPPINGS[key_command]:
         # Only run commands if TV is powered
         command_status = remote.send_key(key_command, KEY_MAPPINGS[key_command])
 
