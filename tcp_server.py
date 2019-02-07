@@ -45,6 +45,7 @@ def server_program():
 
             if remote.is_on():
                 print('sending tv is on')
+                conn.send(data.encode())  # send data to the client
                 conn.send("TV is on".encode())  # send data to the client
             else:
                 print('sending tv is off')
@@ -64,6 +65,8 @@ def server_program():
         data += "Living Room"
         data = b"\x00\x04"
         data += b"\x64\x00\x01\x00"
+        conn.send(data.encode())
+        print('closing tcp connection')
         conn.close()  # close the connection
 
 
