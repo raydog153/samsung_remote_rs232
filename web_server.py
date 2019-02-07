@@ -26,7 +26,7 @@ KEY_MAPPINGS = dict(
     KEY_PRECH=[0x00, 0x00, 0x13],
     KEY_EXIT=[0x00, 0x00, 0x2d],
     KEY_VOLUP=[0x00, 0x00, 0x07],
-    KEY_VOLDOWN=[0x00, 0x00, 0x0b],
+    KEY_VOLDOWN='volume_down',
     KEY_ENTER=[0x00, 0x00, 0x68],
     KEY_RETURN=[0x00, 0x00, 0x58],
     KEY_INFO=[0x00, 0x00, 0x1f],
@@ -53,7 +53,10 @@ def run_key_command(key_command):
         command_status = remote.volume_up()
     elif power_is_on and KEY_MAPPINGS[key_command]:
         # Only run commands if TV is powered
-        command_status = remote.send_key(key_command, KEY_MAPPINGS[key_command])
+        if isinstance(KEY_MAPPINGS[key_command], str):
+            command_status = getattr(remote, KEY_MAPPINGS[key_command])(remote)
+        else:
+            command_status = remote.send_key(key_command, KEY_MAPPINGS[key_command])
 
     remote.close()
 
