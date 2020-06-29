@@ -24,3 +24,6 @@ Samsung TV's
 ## Installation instructions
 - Requirements
   - Python module serial: pip install pyserial (If you install wrong serial module by mistake you can undo using: pip uninstall serial)
+
+## Running web server
+sudo nohup python /path/samsung_remote_rs232/web_server.py > output.log &
